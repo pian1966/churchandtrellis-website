@@ -1,0 +1,55 @@
+# Publishes the Church & Trellis public website (churchandtrellis.com).
+# The website is written in the app's repository (pian1966/church-hub, folder site/).
+# Every day, and whenever someone presses "Run workflow", this robot copies the latest
+# website from there, points its links at the app, and publishes it here.
+name: Publish website
+
+on:
+  schedule:
+    - cron: '17 3 * * *'   # every day at 05:17 South African time
+  workflow_dispatch:        # the "Run workflow" button
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Get the latest app repository
+        uses: actions/checkout@v4
+        with:
+          repository: pian1966/church-hub
+          path: app
+
+      - name: Build the website
+        run: |
+          set -e
+          mkdir -p out
+          cp -R app/site/. out/
+          # The website borrows pictures, code and the Firebase rules from the app,
+          # and its "Try the demo" buttons open the app, so "../" becomes the app's address.
+          APP='https://pian1966.github.io/church-hub/'
+          find out -type f \( -name '*.html' -o -name '*.js' \) -print0 \
+            | xargs -0 sed -i "s#\.\./#${APP}#g"
+          echo 'churchandtrellis.com' > out/CNAME
+          touch out/.nojekyll
+          ls -la out
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+      - id: deploy
+        uses: actions/deploy-pages@v4
