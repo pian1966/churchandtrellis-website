@@ -8,3 +8,6 @@ A robot (`.github/workflows/publish.yml`) copies it from there every day and pub
 To publish a change straight away: **Actions → Publish website → Run workflow**.
 
 The app itself stays at https://pian1966.github.io/church-hub/
+
+The website text (features, the suggested coffee price, questions and answers) is kept up to date together with the app,
+so the daily publish always shows the latest version. Name: **Church & Trellis**.
