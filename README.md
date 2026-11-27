@@ -7,4 +7,4 @@ Don't edit the website here. It is written in the app's repository,
 A robot (`.github/workflows/publish.yml`) copies it from there every day and publishes it.
 To publish a change straight away: **Actions → Publish website → Run workflow**.
 
-The app itself stays at https://pian1966.github.io/church-hub/
+The app itself is at https://app.churchandtrellis.com/
