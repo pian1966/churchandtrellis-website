@@ -40,7 +40,7 @@ jobs:
           cp -R app/site/. out/
           # The website borrows pictures, code and the Firebase rules from the app,
           # and its "Try the demo" buttons open the app, so "../" becomes the app's address.
-          APP='https://pian1966.github.io/church-hub/'
+          APP='https://app.churchandtrellis.com/'
           find out -type f \( -name '*.html' -o -name '*.js' \) -print0 \
             | xargs -0 sed -i "s#\.\./#${APP}#g"
           echo 'churchandtrellis.com' > out/CNAME
